@@ -1,0 +1,67 @@
+name: Deploy Frontend to Hostinger
+on:
+  push:
+    branches:
+      - staging
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Create env file for Vite build
+        run: |
+          if [ "${GITHUB_REF_NAME}" = "staging" ]; then
+            echo "VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }}" >> .env.staging
+            echo "VITE_SUPABASE_ANON_KEY=${{ secrets.VITE_SUPABASE_ANON_KEY }}" >> .env.staging
+            echo "VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }}"  >> .env.staging
+          elif [ "${GITHUB_REF_NAME}" = "main" ]; then
+            echo "VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }}" >> .env
+            echo "VITE_SUPABASE_ANON_KEY=${{ secrets.VITE_SUPABASE_ANON_KEY }}" >> .env
+            echo "VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }}"  >> .env
+          else
+            echo "Unsupported branch: ${GITHUB_REF_NAME}"
+            exit 1
+          fi
+      - name: Build frontend
+        run: |
+          if [ "${GITHUB_REF_NAME}" = "staging" ]; then
+            npm run build:staging
+          else
+            npm run build
+          fi
+      - name: Test SSH connectivity
+        run: |
+          nc -zv ${{ secrets.HOSTINGER_SSH_HOST }} ${{ secrets.HOSTINGER_SSH_PORT }} || echo "Connection failed"
+          ping -c 2 ${{ secrets.HOSTINGER_SSH_HOST }} || echo "Ping failed"
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          cat << 'EOF' > ~/.ssh/id_ed25519
+          ${{ secrets.HOSTINGER_SSH_KEY }}
+          EOF
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p ${{ secrets.HOSTINGER_SSH_PORT }} ${{ secrets.HOSTINGER_SSH_HOST }} >> ~/.ssh/known_hosts
+      - name: Deploy via rsync
+        run: |
+          if [ "${GITHUB_REF_NAME}" = "staging" ]; then
+            DEPLOY_PATH="/home/${{ secrets.HOSTINGER_SSH_USER }}/domains/myvinylstats.com/public_html/staging"
+          else
+            DEPLOY_PATH="/home/${{ secrets.HOSTINGER_SSH_USER }}/domains/myvinylstats.com/public_html"
+          fi
+          rsync -az --delete \
+            --exclude='.htaccess' \
+            --exclude='.htpasswd' \
+            --exclude='.well-known' \
+            -e "ssh -p ${{ secrets.HOSTINGER_SSH_PORT }} -i ~/.ssh/id_ed25519" \
+            dist/ \
+            ${{ secrets.HOSTINGER_SSH_USER }}@${{ secrets.HOSTINGER_SSH_HOST }}:$DEPLOY_PATH

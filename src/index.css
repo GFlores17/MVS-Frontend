@@ -1,0 +1,48 @@
+@font-face {
+    font-family: "Saira";
+    src: url("/fonts/SairaCondensed-Medium.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Oxanium";
+    src: url("/fonts/Oxanium-VariableFont_wght.ttf") format("truetype");
+    font-weight: 200 800;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Jura";
+    src: url("/fonts/Jura-VariableFont_wght.ttf") format("truetype");
+    font-weight: 300 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  
+  
+  @import "tailwindcss";
+  
+  @theme {
+    --font-saira: "Saira", sans-serif; 
+  }
+
+   
+  @theme {
+    --font-oxanium: "Oxanium", sans-serif; 
+  }
+
+  @theme {
+    --font-jura: "Jura", sans-serif; 
+  }
+
+  @theme {
+    --color-mvsBlack: #1a383a;
+    --color-mvsTeal: #307575;
+    --color-mvsCyan: #58bfc4;
+    --color-mvsWhite: #f9F9f7;
+    --color-mvsDarkCyan: #307575;
+    --color-mvsBackgroundColor: #dddbd4;
+  }
