@@ -1,6 +1,6 @@
 <a name="readme-top"></a>
 
-[![LinkedIn](https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555)](https://www.linkedin.com/in/mvsflores/)
+[![MyVinylStats Screenshot](images/Login_Page.png)
 
 <br />
 <div align="center">
@@ -9,13 +9,6 @@
     An interactive vinyl collection logging app — track your records, log play sessions, and explore your full listening history.
     <br />
     <a href="https://myvinylstats.com"><strong>View Live App »</strong></a>
-    <br />
-    <br />
-    <a href="https://myvinylstats.com">Live Demo</a>
-    ·
-    <a href="https://github.com/gflores17/myvinylstats/issues/new?labels=bug">Report Bug</a>
-    ·
-    <a href="https://github.com/gflores17/myvinylstats/issues/new?labels=enhancement">Request Feature</a>
   </p>
 </div>
 
@@ -37,7 +30,7 @@
 
 ## About The Project
 
-[![MyVinylStats Screenshot](https://via.placeholder.com/800x400?text=MyVinylStats+Screenshot)](https://myvinylstats.com)
+[![MyVinylStats Screenshot](images/Currently_Listening_Page.png)
 
 MyVinylStats is built for vinyl collectors who want more than a static spreadsheet. It connects to your Discogs collection and lets you log every play session, building a timestamped listening history over time. The goal is a fast, repeatable logging experience — open the app, log the record, done.
 
@@ -59,7 +52,6 @@ MyVinylStats is built for vinyl collectors who want more than a static spreadshe
 [![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-[![AWS](https://img.shields.io/badge/Amazon_AWS-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)](https://aws.amazon.com/)
 [![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white)](https://prometheus.io/)
 [![Grafana](https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white)](https://grafana.com/)
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)](https://github.com/features/actions)
@@ -74,33 +66,40 @@ This repo contains the React frontend only. Follow the steps below to run it loc
 
 ### Prerequisites
 
-- Node.js and npm installed
-- A running instance of the MyVinylStats backend *(private)*
-- A Discogs account with API credentials
+Install Node.js (npm is included automatically):
 
+- Download and install from [nodejs.org](https://nodejs.org/) — use the LTS version
+
+Verify the install worked:
 ```bash
-npm install npm@latest -g
+node -v
+npm -v
 ```
 
 ### Installation
 
 1. Clone the repo
-   ```bash
-   git clone https://github.com/gflores17/myvinylstats.git
-   ```
+```bash
+   git clone https://github.com/GFlores17/MVS-Frontend.git
+   cd MVS-Frontend
+```
 2. Install dependencies
-   ```bash
+```bash
    npm install
-   ```
+```
 3. Create a `.env` file in the root and add your environment variables
-   ```
-   REACT_APP_API_URL=your_backend_url
-   REACT_APP_DISCOGS_KEY=your_discogs_key
-   ```
+```
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   VITE_BACKEND_URL=your_backend_url
+```
 4. Start the development server
-   ```bash
-   npm start
-   ```
+```bash
+   npm run dev
+```
+5. Open your browser and navigate to `http://localhost:5173`
+
+> **Note:** Without a running backend and valid API credentials, the UI will load but data fetching will not work.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -108,10 +107,11 @@ npm install npm@latest -g
 
 ## Usage
 
-- **Log a play session** — select a record from your collection and log it in one action
-- **View listening history** — browse your full play history sorted by date
-- **Collection sync** — your Discogs collection stays up to date via the REST API integration
-- **Secure login** — authenticate with your Discogs account via OAuth 2.0
+- **Log a play session** — Select a record from your collection and log it in one action.
+- **View listening history** — Browse your full play history sorted by date.
+- **Collection sync** — Your Discogs collection stays up to date via the REST API integration.
+- **Scan QR Codes** - Scan *MVS generated, persistent* QR codes tied to each album to automate the logging process.
+- **Secure login** — Authenticate with your Discogs account via OAuth 2.0.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -121,17 +121,19 @@ npm install npm@latest -g
 
 MyVinylStats is a full-stack application split across two repositories — this public frontend and a private backend.
 
-| Layer | Technology |
-|---|---|
-| Frontend | React, JavaScript, HTML, CSS |
-| Backend | Node.js, Express, MongoDB *(private repo)* |
-| API Integration | Discogs REST API |
-| Authentication | OAuth 2.0 |
-| Storage | AWS S3 |
-| Monitoring | Prometheus, Grafana |
-| CI/CD | GitHub Actions → SSH deploy to Hostinger |
+| Layer            | Technology |
+--------------------------------------------------
+| Frontend         | React, JavaScript, HTML, CSS |
+| Backend          | Node.js, Express, MongoDB *(private repo)* |
+| API Integration  | Discogs REST API |
+| Authentication   | OAuth 2.0 |
+| Storage          | AWS S3 |
+| Monitoring       | Prometheus, Grafana |
+| CI/CD            | GitHub Actions → SSH deploy to Hostinger |
 
-The backend is instrumented with Prometheus to track HTTP request rates, error rates, and response times across all API endpoints. Grafana dashboards provide real-time observability into service health. Every merge to `main` on the frontend triggers an automated GitHub Actions workflow that SSH-deploys to production.
+* The backend is instrumented with Prometheus to track HTTP request rates, error rates, and response times across all API endpoints.
+* Grafana dashboards provide real-time observability into service health.
+* Every merge to `main` or `staging` on the frontend triggers an automated GitHub Actions workflow that SSH-deploys to production.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -140,11 +142,9 @@ The backend is instrumented with Prometheus to track HTTP request rates, error r
 ## Roadmap
 
 - [ ] Mobile-optimized UI
-- [ ] Play session statistics and charts
-- [ ] Genre and decade breakdowns
-- [ ] Social listening history sharing
-
-See the [open issues](https://github.com/gflores17/myvinylstats/issues) for a full list of proposed features and known issues.
+- [ ] More complex data dashboards (through Neo4J and GraphQL)
+- [ ] Social aspects, including: profiles, friends, "grails" (your rarest records).
+- [ ] iOS native mobile-app.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -155,8 +155,6 @@ See the [open issues](https://github.com/gflores17/myvinylstats/issues) for a fu
 George Flores — [georgeflores@myvinylstats.com](mailto:georgeflores@myvinylstats.com)
 
 [![LinkedIn](https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555)](https://linkedin.com/in/georgeflores)
-[![Portfolio](https://img.shields.io/badge/Portfolio-emperorstudios.net-informational?style=for-the-badge)](https://emperorstudios.net)
-
-Project Link: [https://github.com/gflores17/myvinylstats](https://github.com/gflores17/myvinylstats)
+Project Link: [https://github.com/GFlores17/MVS-Frontend](https://github.com/GFlores17/MVS-Frontend)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
