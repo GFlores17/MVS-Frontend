@@ -156,5 +156,5 @@ MyVinylStats is a full-stack application split across two repositories — this 
 [![LinkedIn](https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555)](https://linkedin.com/in/mvsflores)
 [![Github Repo](https://img.shields.io/badge/-Github-black.svg?style=for-the-badge&logo=linkedin&colorB=555)](https://github.com/GFlores17/)
 <br/>
-![Email:georgeflores@myvinylstats.com](mailto:georgeflores@myvinylstats.com)
+[Email:georgeflores@myvinylstats.com](mailto:georgeflores@myvinylstats.com)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
