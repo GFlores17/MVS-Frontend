@@ -1,6 +1,6 @@
 <a name="readme-top"></a>
 
-[![MyVinylStats Screenshot](images/Login_Page.png)
+![MyVinylStats Screenshot](images/Login_Page.png)
 
 <br />
 <div align="center">
@@ -30,7 +30,7 @@
 
 ## About The Project
 
-[![MyVinylStats Screenshot](images/Currently_Listening_Page.png)
+![MyVinylStats Screenshot](images/Currently_Listening_Page.png)
 
 MyVinylStats is built for vinyl collectors who want more than a static spreadsheet. It connects to your Discogs collection and lets you log every play session, building a timestamped listening history over time. The goal is a fast, repeatable logging experience — open the app, log the record, done.
 
@@ -121,15 +121,15 @@ npm -v
 
 MyVinylStats is a full-stack application split across two repositories — this public frontend and a private backend.
 
-| Layer            | Technology |
---------------------------------------------------
-| Frontend         | React, JavaScript, HTML, CSS |
-| Backend          | Node.js, Express, MongoDB *(private repo)* |
-| API Integration  | Discogs REST API |
-| Authentication   | OAuth 2.0 |
-| Storage          | AWS S3 |
-| Monitoring       | Prometheus, Grafana |
-| CI/CD            | GitHub Actions → SSH deploy to Hostinger |
+| Layer | Technology |
+|---|---|
+| Frontend | React, JavaScript, HTML, CSS |
+| Backend | Node.js, Express, MongoDB *(private repo)* |
+| API Integration | Discogs REST API |
+| Authentication | OAuth 2.0 |
+| Storage | AWS S3 |
+| Monitoring | Prometheus, Grafana |
+| CI/CD | GitHub Actions → SSH deploy to Hostinger |
 
 * The backend is instrumented with Prometheus to track HTTP request rates, error rates, and response times across all API endpoints.
 * Grafana dashboards provide real-time observability into service health.
